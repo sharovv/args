@@ -114,7 +114,7 @@ static int args_eq( const char *opt, const char *list )
   return 0;
 }
 
-static const char *args_parse( int argc, char *argv[], const char *list[], const char *opt, const int n, const int need_value )
+static const char *args_parse( int argc, char *argv[], const char *list[], const int nlist, const char *opt, const int n, const int need_value )
 {
   int c, na = 1,nc = 0, stage = ARGS_NONE, narg = 0, nopt = 0, i;
   const char *s, *s1, *s2, *sq;
@@ -160,7 +160,7 @@ static const char *args_parse( int argc, char *argv[], const char *list[], const
       stage = ARGS_COPT;
     case ARGS_COPT:
       /* is option in the list? */
-      for( i = 0, s = NULL; list[i] != NULL; i++ )
+      for( i = 0, s = NULL; i < nlist; i++ )
       {
         if( list[i][0] != '-' )
         {
@@ -218,7 +218,7 @@ static const char *args_parse( int argc, char *argv[], const char *list[], const
       return argv[na] + nc;
     case ARGS_SOPT:
       /* scan list for long option */
-      for( i = 0, s = NULL; list[i] != NULL; i++ )
+      for( i = 0, s = NULL; i < nlist; i++ )
       {
         if( (s1 = strchr( list[i], '=' )) == NULL )
         {
@@ -309,7 +309,7 @@ static const char *args_parse( int argc, char *argv[], const char *list[], const
   /* return default value, if any */
   if( opt != NULL && need_value )
   {
-    for( i = 0; list[i] != NULL; i++ )
+    for( i = 0; i < nlist; i++ )
     {
       if( args_eq( opt, list[i] ) )
       {
@@ -324,7 +324,7 @@ static const char *args_parse( int argc, char *argv[], const char *list[], const
   return NULL;
 }
 
-static char *args_help_buffer( const char *list[] )
+static char *args_help_buffer( const char *list[], const int nlist )
 {
   int i, j, k, w, c;
   const char *s, *s1, *s2;
@@ -333,7 +333,7 @@ static char *args_help_buffer( const char *list[] )
 
   /* help is divided in 2 columns: left for option's names, right for comments */
   /* now define width of left column (w) and size of all comments (c) */
-  for( i = 0, k = 0, w = 0, c = 0; list[i] != NULL; i++, k++ )
+  for( i = 0, k = 0, w = 0, c = 0; i < nlist; i++, k++ )
   {
     /* one short form option gives 2 literals */
     j = ((strchr( list[i], '-' ) != NULL) ? 2: 0);
@@ -398,7 +398,7 @@ static char *args_help_buffer( const char *list[] )
     return NULL;
 
   /* now print help */
-  for( i = 0, d = buffer; list[i] != NULL; i++ )
+  for( i = 0, d = buffer; i < nlist; i++ )
   {
     /* origin position */
     d0 = d;
@@ -487,13 +487,14 @@ static char *args_help_buffer( const char *list[] )
   return buffer;
 }
 
-#define args_arg() args_parse( argc, argv, args_list, NULL, 0, 0 )
-#define args_argn( n ) args_parse( argc, argv, args_list, NULL, n, 0 )
-#define args_opt( opt ) (args_parse( argc, argv, args_list, opt, 0, 0 ) != NULL)
-#define args_val( opt ) args_parse( argc, argv, args_list, opt, 0, 1 )
-#define args_valn( opt, n ) args_parse( argc, argv, args_list, opt, n, 1 )
-#define args_check() (args_parse( argc, argv, args_list, NULL, -1, 0 ) == NULL && args_error_copt == 0 && args_error_sopt == NULL)
+#define args_nlist (sizeof( args_list ) / sizeof( args_list[0] ))
+#define args_arg() args_parse( argc, argv, args_list, args_nlist, NULL, 0, 0 )
+#define args_argn( n ) args_parse( argc, argv, args_list, args_nlist, NULL, n, 0 )
+#define args_opt( opt ) (args_parse( argc, argv, args_list, args_nlist, opt, 0, 0 ) != NULL)
+#define args_val( opt ) args_parse( argc, argv, args_list, args_nlist, opt, 0, 1 )
+#define args_valn( opt, n ) args_parse( argc, argv, args_list, args_nlist, opt, n, 1 )
+#define args_check() (args_parse( argc, argv, args_list, args_nlist, NULL, -1, 0 ) == NULL && args_error_copt == 0 && args_error_sopt == NULL)
 #define args_error() (args_error_copt != 0 ? (char *)&args_error_copt: args_error_sopt)
-#define args_help() args_help_buffer( args_list )
+#define args_help() args_help_buffer( args_list, args_nlist )
 
 #endif

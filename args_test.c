@@ -11,8 +11,7 @@ static int test()
     "-f=flag%Flag",
     "-x=aux%Auxiliary flag",
     "-w=warning-level#LEVEL%Warning level^3",
-    "-o=option#VALUE%Additional option(s)",
-    NULL
+    "-o=option#VALUE%Additional option(s)"
   };
   int f, x;
   const char *w, *o1, *o2, *o3, *o4, *a, *a1, *a2, *a3;
@@ -53,8 +52,7 @@ int main( int argc, char *argv[] )
     "-x=aux%Auxiliary flag",
     "-w=warning-level#LEVEL%Warning level^3",
     "-o=option#VALUE%Additional option(s),\nand multiline comment.",
-    "-?=help%Print help",
-    NULL
+    "-?=help%Print help"
   };
   int i;
   const char *s;
