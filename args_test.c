@@ -7,14 +7,14 @@ static int test()
 {
   char *argv[] = { "cmdarg", "-x", "--flag", "--warning-level=10", "arg1", "--option", "opt1", "arg2", "-o", "opt2", "--option=opt3" };
   int argc = sizeof( argv ) / sizeof( argv[0] );
-  static const char *args_list[] = {
+  static char *args_list[] = {
     "-f=flag%Flag",
     "-x=aux%Auxiliary flag",
     "-w=warning-level#LEVEL%Warning level^3",
     "-o=option#VALUE%Additional option(s)"
   };
   int f, x;
-  const char *w, *o1, *o2, *o3, *o4, *a, *a1, *a2, *a3;
+  char *w, *o1, *o2, *o3, *o4, *a, *a1, *a2, *a3;
 
   if( !args_check() )
   {
@@ -47,7 +47,7 @@ static int test()
 
 int main( int argc, char *argv[] )
 {
-  static const char *args_list[] = {
+  static char *args_list[] = {
     "-f=flag%Flag",
     "-x=aux%Auxiliary flag",
     "-w=warning-level#LEVEL%Warning level^3",
@@ -55,7 +55,7 @@ int main( int argc, char *argv[] )
     "-?=help%Print help"
   };
   int i;
-  const char *s;
+  char *s;
 
   if( args_opt( "-?" ) )
   {

@@ -114,10 +114,10 @@ static int args_eq( const char *opt, const char *list )
   return 0;
 }
 
-static const char *args_parse( int argc, char *argv[], const char *list[], const int nlist, const char *opt, const int n, const int need_value )
+static char *args_parse( int argc, char *argv[], char *list[], const int nlist, const char *opt, const int n, const int need_value )
 {
   int c, na = 1,nc = 0, stage = ARGS_NONE, narg = 0, nopt = 0, i;
-  const char *s, *s1, *s2, *sq;
+  char *s, *s1, *s2, *sq;
 
   // till the end of argv
   while( stage != ARGS_END && na < argc )
@@ -324,10 +324,10 @@ static const char *args_parse( int argc, char *argv[], const char *list[], const
   return NULL;
 }
 
-static char *args_help_buffer( const char *list[], const int nlist )
+static char *args_help_buffer( char *list[], const int nlist )
 {
   int i, j, k, w, c;
-  const char *s, *s1, *s2;
+  char *s, *s1, *s2;
   char *buffer, *d, *d0;
   const char newline[] = "\n";
 
