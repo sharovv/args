@@ -396,6 +396,7 @@ static char *args_help_buffer( const char *list[], const int nlist )
   c += (k * w);
   if( (buffer = malloc( c + 256 )) == NULL )
     return NULL;
+  memset( buffer, 0, c + 256 );
 
   /* now print help */
   for( i = 0, d = buffer; i < nlist; i++ )
