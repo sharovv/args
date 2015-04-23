@@ -336,10 +336,11 @@ static char *args_help_buffer( char *list[], const int nlist )
   for( i = 0, k = 0, w = 0, c = 0; i < nlist; i++, k++ )
   {
     /* one short form option gives 2 literals */
-    j = ((strchr( list[i], '-' ) != NULL) ? 2: 0);
+    j = ((list[i][0] == '-') ? 2: 0);
 
     /* look for long form option */
-    if( (s1 = strchr( list[i], '=' )) != NULL )
+    s1 = list[i] + j;
+    if( s1[0] == '=' )
     {
       /* if short form was found */
       if( j != 0 )
@@ -404,16 +405,22 @@ static char *args_help_buffer( char *list[], const int nlist )
     /* origin position */
     d0 = d;
     /* one short form */
-    if( (s = strchr( list[i], '-' )) != NULL )
+    s = NULL;
+    j = 0;
+    if( list[i][0] == '-' )
     {
+      s = list[i];
+      j = 2;
       *d++ = ' ';
       *d++ = ' ';
       *d++ = '-';
       *d++ = s[1];
     }
     /* look for long form option */
-    if( (s1 = strchr( list[i], '=' )) != NULL )
+    s1 = list[i] + j;
+    if( (s1[0] == '=' ) )
     {
+      s1 = list[i] + j;
       *d++ = ((s != NULL) ? ',': ' ');
       *d++ = ' ';
       *d++ = '-';
