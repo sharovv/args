@@ -117,7 +117,7 @@ static int args_eq( const char *opt, const char *list )
 static char *args_parse( int argc, char *argv[], char *list[], const int nlist, const char *opt, const int n, const int need_value )
 {
   int c, na = 1,nc = 0, stage = ARGS_NONE, narg = 0, nopt = 0, i;
-  char *s, *s1, *s2, *sq;
+  char *s, *s1 = NULL, *s2 = NULL, *sq;
 
   // till the end of argv
   while( stage != ARGS_END && na < argc )
