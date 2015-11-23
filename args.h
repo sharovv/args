@@ -208,8 +208,14 @@ static char *args_parse( int argc, char *argv[], char *list[], const int nlist, 
       }
       break;
     case ARGS_VALUE:
-      /* equal found, value follow */
-      if( c == '=' )
+      /* if next option follow */
+      if( nc == 0 && c == '-' )
+      {
+        // there is no value
+        return NULL;
+      }
+      /* equal found (not first in argv[na]), value follow */
+      if( nc != 0 && c == '=' )
       {
         stage = ARGS_VALUE_EQ;
         break;
@@ -303,6 +309,13 @@ static char *args_parse( int argc, char *argv[], char *list[], const int nlist, 
       {
         /* stop parsing */
         stage = ARGS_END;
+      }
+      else
+      {
+        if( argv[na][nc] == '-' && stage == ARGS_VALUE_SKIP )
+        {
+          stage = ARGS_NONE;
+        }
       }
     }
   }
